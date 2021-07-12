@@ -19,12 +19,13 @@ jobs:
         with:
           script: |
             # Create comment body as Markdown
-            var msg = `## The Salt Project could use **Your** help"
-
-            <details>
-            <summary>Please check the following and see if you can help.</summary>
-            <pre>${{ steps.echo-fail.output }}</pre>
-            </details>`
+            #var msg = `## The Salt Project could use **Your** help"
+            #
+            #<details>
+            #<summary>Please check the following and see if you can help.</summary>
+            #<pre>${{ steps.echo-fail.output }}</pre>
+            #</details>`
+            var msg = `MESSAGE`
             # Create comment
             github.issues.createComment({
               issue_number: context.issue.number,
