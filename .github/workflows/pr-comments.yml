@@ -1,0 +1,36 @@
+name: Pull Request Messenger
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo and Fail
+        id: echo-fail
+        continue-on-error: true
+        run:
+          ls -lah
+          exit 1
+
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            # Create comment body as Markdown
+
+            var msg = `## The Salt Project could use **Your** help"
+
+            <details>
+            <summary>Please check the following and see if you can help.</summary>
+            <pre>${{ steps.echo-fail.output }}</pre>
+            </details>
+            `
+            # Create comment
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: msg
+            })
