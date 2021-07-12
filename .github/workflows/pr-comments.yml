@@ -10,24 +10,28 @@ jobs:
       - name: Echo and Fail
         id: echo-fail
         continue-on-error: true
-        run:
+        shell: bash
+        run: |
           ls -lah
           exit 1
 
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             # Create comment body as Markdown
-
             var msg = `## The Salt Project could use **Your** help"
 
             <details>
             <summary>Please check the following and see if you can help.</summary>
             <pre>${{ steps.echo-fail.output }}</pre>
-            </details>
-            `
+            </details>`
             # Create comment
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: msg
+            })
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
