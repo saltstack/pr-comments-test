@@ -17,6 +17,7 @@ jobs:
 
       - uses: actions/github-script@v4
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             # Create comment body as Markdown
             #var msg = `## The Salt Project could use **Your** help"
