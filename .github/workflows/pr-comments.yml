@@ -13,7 +13,7 @@ jobs:
         shell: bash
         run: |
           ls -lah | tee output.txt
-          echo "::set-output name=contents::${cat output.txt}"
+          echo "::set-output name=contents::$(cat output.txt)"
           exit 1
 
       - uses: actions/github-script@v4
