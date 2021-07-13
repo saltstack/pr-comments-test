@@ -19,21 +19,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            # Create comment body as Markdown
-            #var msg = `## The Salt Project could use **Your** help"
-            #
-            #<details>
-            #<summary>Please check the following and see if you can help.</summary>
-            #<pre>${{ steps.echo-fail.output }}</pre>
-            #</details>`
-            var msg = `MESSAGE`
-            # Create comment
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: msg
-            })
+            var msg = `## The Salt Project could use **Your** help"
+
+            <details>
+            <summary>Please check the following and see if you can help.</summary>
+            <pre>${{ steps.echo-fail.output }}</pre>
+            </details>`
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
