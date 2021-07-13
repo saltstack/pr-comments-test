@@ -31,8 +31,13 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.payload.number,
             })
-            const botComment = comments.find(comment => comment.user.id === 41898282)
-            console.log(`Comment ${botComment}`)
+
+            const paged_comments = await github.paginate(opts)
+            for (const comment of paged_comments) {
+              console.log(`Commend ID: ${comment.id}; Comment: ${comment.comment}`)
+            }
+            //const botComment = comments.find(comment => comment.user.id === 41898282)
+            //console.log(`Comment ${botComment}`)
             var msg = `### The Salt Project Needs **Your** Help
 
             <details>
