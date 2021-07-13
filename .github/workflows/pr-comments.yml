@@ -12,18 +12,19 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          ls -lah
+          ls -lah | tee output.txt
+          echo "::set-output name=contents::${cat output.txt}"
           exit 1
 
       - uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            var msg = `## The Salt Project could use **Your** help"
+            var msg = `### The Salt Project Needs **Your** Help
 
             <details>
             <summary>Please check the following and see if you can help.</summary>
-            <pre>${{ steps.echo-fail.outputs.test }}</pre>
+            <pre>${{ steps.echo-fail.output.contents }}</pre>
             </details>`
             github.issues.createComment({
               issue_number: context.issue.number,
