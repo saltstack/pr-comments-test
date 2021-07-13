@@ -23,7 +23,7 @@ jobs:
 
             <details>
             <summary>Please check the following and see if you can help.</summary>
-            <pre>${{ steps.echo-fail.output }}</pre>
+            <pre>${{ steps.echo-fail.outputs.test }}</pre>
             </details>`
             github.issues.createComment({
               issue_number: context.issue.number,
