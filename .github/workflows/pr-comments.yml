@@ -32,8 +32,7 @@ jobs:
               issue_number: context.payload.number,
             })
 
-            const paged_comments = await github.paginate(comments)
-            for (const comment of paged_comments) {
+            for (const comment in comments) {
               console.log(`Commend ID: ${comment.id}; Comment: ${comment.comment}`)
             }
             //const botComment = comments.find(comment => comment.user.id === 41898282)
