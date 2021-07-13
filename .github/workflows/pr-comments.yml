@@ -13,7 +13,11 @@ jobs:
         shell: bash
         run: |
           ls -lah | tee output.txt
-          echo "::set-output name=contents::${$(cat output.txt)//\\n/%0A}"
+          OUTPUT=$(cat output.txt)
+          OUTPUT="${OUTPUT//'%'/'%25'}"
+          OUTPUT="${OUTPUT//$'\n'/'%0A'}"
+          OUTPUT="${OUTPUT//$'\r'/'%0D'}"
+          echo "::set-output name=contents::$OUTPUT"
           exit 1
 
       - uses: actions/github-script@v4
