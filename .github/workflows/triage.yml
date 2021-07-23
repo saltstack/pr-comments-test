@@ -26,8 +26,8 @@ jobs:
       - name: Set up cache
         uses: actions/cache@v2
         with:
-          path: .last-user-assigned
-          key: cache-${{ hashFiles('.last-user-assigned') }}
+          path: .last_account_assigned
+          key: cache-${{ hashFiles('.last_account_assigned') }}
 
       - name: Label And Assign Issue
         env:
