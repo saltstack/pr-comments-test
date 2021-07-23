@@ -21,13 +21,12 @@ jobs:
         run: |
           pip install pygithub
 
-      - name: Set up cache
-        uses: actions/cache@v2
+      - name: Download last assignment cache
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: triage.yml
+          name: last-assignment
           path: .last-user-assigned
-          key: cache-${{ hashFiles('.last-user-assigned') }}
-          restore-keys: |
-            cache-
 
       - name: Label And Assign Issue
         env:
@@ -42,10 +41,8 @@ jobs:
             --label needs-triage \
             --issue ${{ github.event.issue.number }}
 
-      - name: Rerun cache
-        uses: actions/cache@v2
+      - name: Upload last assignment cache
+        uses: actions/upload-artifact@v2
         with:
+          name: last-assignment
           path: .last-user-assigned
-          key: cache-${{ hashFiles('.last-user-assigned') }}
-          restore-keys: |
-            cache-
