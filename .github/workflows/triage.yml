@@ -12,7 +12,7 @@ jobs:
           github-token: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
           script: |
             // Get Team Members
-            team = github.teams.getByName({
+            team = await github.teams.getByName({
               org: 'saltstack',
               team_slug: 'team-core'
             })
