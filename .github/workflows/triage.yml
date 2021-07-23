@@ -1,7 +1,7 @@
 name: New Issues Triage Assignment
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 jobs:
   triage-and-assign:
