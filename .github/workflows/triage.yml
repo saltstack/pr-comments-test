@@ -20,21 +20,21 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install pygithub
-          # Make sure the cache file exists
-          test -f .last_account_assigned || echo "{}" > .last_account_assigned
 
       - name: Set up cache
         uses: actions/cache@v2
         with:
-          path: .last_account_assigned
-          key: last-account-assigned-cache
+          path: .last-user-assigned
+          key: cache-${{ hashFiles('.last-user-assigned') }}
+          restore-keys: |
+            cache-
 
       - name: Label And Assign Issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           READ_ORG_TOKEN: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
         run: |
-          cat .last_account_assigned
+          cat .last-user-assigned
           python .github/workflows/scripts/label-and-assign.py \
             --org ${{ github.repository_owner }} \
             --repo ${{ github.event.repository.name }} \
