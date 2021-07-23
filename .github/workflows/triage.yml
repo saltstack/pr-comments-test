@@ -23,10 +23,9 @@ jobs:
           key: ${{ hashFiles('.last-user-assigned') }}
 
       - name: Label And Assign Issue
-        with:
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            READ_ORG_TOKEN: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          READ_ORG_TOKEN: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
         run: |
           python .github/workflows/scripts/label-and-assign.py \
             --org ${{ github.repository_owner }} \
