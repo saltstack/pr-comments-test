@@ -27,14 +27,14 @@ jobs:
         with:
           workflow: triage.yml
           name: last-assignment
-          path: .last-user-assigned
+          path: .cache
 
       - name: Label And Assign Issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           READ_ORG_TOKEN: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
         run: |
-          cat .last-user-assigned || true
+          cat .cache/last-user-assigned || true
           python .github/workflows/scripts/label-and-assign.py \
             --org ${{ github.repository_owner }} \
             --repo ${{ github.event.repository.name }} \
@@ -46,4 +46,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: last-assignment
-          path: .last-user-assigned
+          path: .cache

@@ -10,8 +10,8 @@ import pathlib
 import github
 from github.GithubException import GithubException
 
-CACHE_FILENAME = pathlib.Path(".last-user-assigned")
-print(f"Last assignment cache file path: {CACHE_FILENAME}", file=sys.stderr, flush=True)
+CACHE_FILENAME = pathlib.Path(".cache", "last-user-assigned")
+
 
 def get_last_account_assigned():
     if not CACHE_FILENAME.exists():
@@ -84,6 +84,8 @@ def main():
 
     options = parser.parse_args()
     print(f"Last assignment cache file path: {CACHE_FILENAME}", file=sys.stderr, flush=True)
+    if CACHE_FILENAME.parent.is_dir() is False:
+        CACHE_FILENAME.parent.mkdir()
     try:
         label_and_assign_issue(options)
         parser.exit(0)
