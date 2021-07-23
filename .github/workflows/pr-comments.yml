@@ -48,8 +48,6 @@ jobs:
               }
             }
 
-            //const botComment = comments.find(comment => comment.user.id === 41898282)
-            //console.log(`Comment ${botComment}`)
             var msg = `${comment_header}
 
             <details>
