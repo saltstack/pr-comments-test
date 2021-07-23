@@ -17,8 +17,11 @@ def get_last_account_assigned():
     if not CACHE_FILENAME.exists():
         return
 
-    data = json.loads(CACHE_FILENAME.read_text())
-    return data["username"]
+    try:
+        data = json.loads(CACHE_FILENAME.read_text())
+        return data["username"]
+    except (ValueError, KeyError):
+        return
 
 def get_team_members(options):
     g = github.Github(os.environ["READ_ORG_TOKEN"])
