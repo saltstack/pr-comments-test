@@ -27,7 +27,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .last_account_assigned
-          key: cache-${{ hashFiles('.last_account_assigned') }}
+          key: last-account-assigned-cache
 
       - name: Label And Assign Issue
         env:
