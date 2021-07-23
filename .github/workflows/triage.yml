@@ -13,7 +13,7 @@ jobs:
           script: |
             // Get Team Members
             team = github.teams.getByName({
-              team_slug: 'saltstack/team-core '
+              team_slug: 'saltstack/team-core'
             })
             console.log(team)
   label:
