@@ -42,10 +42,16 @@ def get_triage_next_account(options):
 def label_and_assign_issue(options):
     g = github.Github(os.environ["GITHUB_TOKEN"])
     org = g.get_organization(options.org)
+    print(f"Loaded Organization: {org}", file=sys.stderr, flush=True)
     repo = org.get_repo(options.repo)
-    next_triage_account = get_triage_next_account(options)
+    print(f"Loaded Repository: {repo}", file=sys.stderr, flush=True)
     issue = repo.get_issue(options.issue)
+    print(f"Loaded Issue: {issue}", file=sys.stderr, flush=True)
+    next_triage_account = get_triage_next_account(options)
+    print(f"Next account up for triage: {next_triage_account}", file=sys.stderr, flush=True)
+    print(f"Adding label {options.label} to issue {issue}", file=sys.stderr, flush=True)
     issue.add_to_labels(options.label)
+    print(f"Assigning issue {issue} to {next_triage_account}", file=sys.stderr, flush=True)
     issue.add_to_assignees(next_triage_account)
     CACHE_FILENAME.write_text(
         json.dumps(
@@ -55,6 +61,7 @@ def label_and_assign_issue(options):
             }
         )
     )
+    print("Done!", file=sys.stderr, flush=True)
 
 
 def main():

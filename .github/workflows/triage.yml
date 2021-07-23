@@ -34,7 +34,7 @@ jobs:
         run: |
           python .github/workflows/scripts/label-and-assign.py \
             --org ${{ github.repository_owner }} \
-            --repo ${{ github.repository }} \
+            --repo ${{ github.event.repository.name }} \
             --team team-core \
             --label needs-triage \
-            --issue ${{ github.event.issue.id }}
+            --issue ${{ github.event.issue.number }}
