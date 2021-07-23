@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .last-user-assigned
-          key: ${{ hashFiles('.last-user-assigned') }}|hashFiles('.github/workflows/scripts/label-and-assign.py')
+          key: cache-${{ hashFiles('.last-user-assigned') }}
 
       - name: Label And Assign Issue
         env:
