@@ -11,6 +11,7 @@ import github
 from github.GithubException import GithubException
 
 CACHE_FILENAME = pathlib.Path(".last-user-assigned")
+print(f"Last assignment cache file path: {CACHE_FILENAME}", file=sys.stderr, flush=True)
 
 def get_last_account_assigned():
     if not CACHE_FILENAME.exists():
@@ -79,7 +80,7 @@ def main():
         parser.exit(status=1, message="READ_ORG_TOKEN environment variable not set")
 
     options = parser.parse_args()
-    print(options)
+    print(f"Last assignment cache file path: {CACHE_FILENAME}", file=sys.stderr, flush=True)
     try:
         label_and_assign_issue(options)
         parser.exit(0)
