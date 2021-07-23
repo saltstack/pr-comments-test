@@ -41,7 +41,9 @@ def get_triage_next_account(options):
 
 def label_and_assign_issue(options):
     g = github.Github(os.environ["GITHUB_TOKEN"])
-    repo = g.get_repo(options.repo)
+    org = g.get_organization(options.org)
+    print(f"Loaded Organization: {org.login}", file=sys.stderr, flush=True)
+    repo = org.get_repo(options.repo)
     print(f"Loaded Repository: {repo.full_name}", file=sys.stderr, flush=True)
     issue = repo.get_issue(options.issue)
     print(f"Loaded Issue: {issue}", file=sys.stderr, flush=True)
