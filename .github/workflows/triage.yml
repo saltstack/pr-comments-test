@@ -33,6 +33,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           READ_ORG_TOKEN: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
         run: |
+          cat .last_account_assigned
           python .github/workflows/scripts/label-and-assign.py \
             --org ${{ github.repository_owner }} \
             --repo ${{ github.event.repository.name }} \
