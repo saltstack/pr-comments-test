@@ -27,10 +27,10 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             READ_ORG_TOKEN: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
-          run: |
-            python .github/workflows/scripts/label-and-assign.py \
-              --org ${{ github.repository_owner }} \
-              --repo ${{ github.repository }} \
-              --team team-core \
-              --label needs-triage \
-              --issue ${{ github.event.issue.id }}
+        run: |
+          python .github/workflows/scripts/label-and-assign.py \
+            --org ${{ github.repository_owner }} \
+            --repo ${{ github.repository }} \
+            --team team-core \
+            --label needs-triage \
+            --issue ${{ github.event.issue.id }}
