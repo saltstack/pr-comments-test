@@ -41,3 +41,11 @@ jobs:
             --team team-core \
             --label needs-triage \
             --issue ${{ github.event.issue.number }}
+
+      - name: Rerun cache
+        uses: actions/cache@v2
+        with:
+          path: .last-user-assigned
+          key: cache-${{ hashFiles('.last-user-assigned') }}
+          restore-keys: |
+            cache-
