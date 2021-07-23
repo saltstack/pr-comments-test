@@ -1,0 +1,84 @@
+import os
+import operator
+import sys
+import json
+import random
+import datetime
+import argparse
+import pathlib
+
+import github
+from github.GithubException import GithubException
+
+CACHE_FILENAME = pathlib.Path(".last-user-assigned")
+
+def get_last_account_assigned():
+    if not CACHE_FILENAME.exists():
+        return
+
+    data = json.loads(CACHE_FILENAME.read_text())
+    return data["username"]
+
+def get_team_members(options):
+    g = github.Github(os.environ["READ_ORG_TOKEN"])
+    org = g.get_organization(options.org)
+    team = org.get_team_by_slug(options.team)
+    return sorted(list(team.get_members()), key=operator.attrgetter("login"))
+
+
+def get_triage_next_account(options):
+    team_members = get_team_members(options)
+    last_account_assigned = get_last_account_assigned()
+    if last_account_assigned is None:
+        return random.choice(team_members)
+
+    previous_account = None
+    for member in team_members:
+        if previous_account and previous_account.login == last_account_assigned:
+            return member
+        previous_account = member
+
+
+def label_and_assign_issue(options):
+    g = github.Github(os.environ["GITHUB_TOKEN"])
+    org = g.get_organization(options.org)
+    repo = org.get_repo(options.repo)
+    next_triage_account = get_triage_next_account(options)
+    issue = repo.get_issue(options.issue)
+    issue.add_to_labels(options.label)
+    issue.add_to_assignees(next_triage_account)
+    CACHE_FILENAME.write_text(
+        json.dumps(
+            {
+                "username": next_triage_account.login,
+                "when": str(datetime.datetime.utcnow())
+            }
+        )
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--org", required=True, help="The Github Organization")
+    parser.add_argument("--team", required=True, help="The Organization Team Slug")
+    parser.add_argument("--repo", required=True, help="The Organization Repository")
+    parser.add_argument("--issue", required=True, type=int, help="The issue number")
+    parser.add_argument("--label", required=True, help="The issue label to assign")
+
+    if not os.environ.get("GITHUB_TOKEN"):
+        parser.exit(status=1, message="GITHUB_TOKEN environment variable not set")
+        sys.exit(1)
+    if not os.environ.get("READ_ORG_TOKEN"):
+        parser.exit(status=1, message="READ_ORG_TOKEN environment variable not set")
+
+    options = parser.parse_args()
+    print(options)
+    try:
+        label_and_assign_issue(options)
+        parser.exit(0)
+    except GithubException as exc:
+        parser.exit(1, message=str(exc))
+
+
+if __name__ == "__main__":
+    main()

@@ -8,25 +8,29 @@ jobs:
   assign:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v4
+
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          github-token: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
-          script: |
-            // Get Team Members
-            team = await github.teams.listMembersInOrg({
-              org: 'saltstack',
-              team_slug: 'team-core'
-            })
-            console.log(team)
-  label:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v4
+          python-version: 3.8
+
+      - name: Set up cache
+        uses: actions/cache@v2
         with:
-          script: |
-            github.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['needs-triage']
-            })
+          path: .last-user-assigned
+          key: ${{ hashFiles('.last-user-assigned') }}
+
+      - name: Label And Assign Issue
+        with:
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            READ_ORG_TOKEN: ${{ secrets.READ_ORG_TEAM_MEMBERS_ISSUE_TRIAGE }}
+          run: |
+            python .github/workflows/scripts/label-and-assign.py \
+              --org ${{ github.repository_owner }} \
+              --repo ${{ github.repository }} \
+              --team team-core \
+              --label needs-triage \
+              --issue ${{ github.event.issue.id }}
