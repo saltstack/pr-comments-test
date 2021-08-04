@@ -59,7 +59,8 @@ jobs:
 
           **Okay... so what do you do?**
 
-          I detect modules that are missing ``CLI Example`` or python docstrings!
+          I detect modules that are missing docstrings or "CLI Example" on existing
+          docstrings!
           When I was created we had a *lot* of these. The documentation for these
           modules need some love and attention to make Salt better for our users.
 
